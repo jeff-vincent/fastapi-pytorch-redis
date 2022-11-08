@@ -14,7 +14,7 @@ PYTORCH_PORT=os.environ.get('PYTORCH_PORT')
 
 @app.on_event('startup')
 async def initialize():
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+    pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=0)
     global REDIS
     REDIS = redis.Redis(connection_pool=pool)
 

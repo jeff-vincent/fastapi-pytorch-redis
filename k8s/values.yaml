@@ -1,0 +1,6 @@
+pytorch_host: pytorch
+pytorch_port: "8000"
+redis_port: "6379"
+redis_host: redis
+ingress_host: null
+ingress_class_name: kong

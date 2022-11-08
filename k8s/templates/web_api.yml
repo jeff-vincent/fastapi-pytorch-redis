@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    velocity.tech.v1/id: web-api
+    velocity.tech.v1/dependsOn: redis
+  name: web-api
+  labels:
+    app: web-api
+spec:
+  selector:
+    matchLabels:
+      api: web-api
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: web-api
+        api: web-api
+    spec:
+      containers:
+        - name: web-api
+          image: jdvincent/pytorch-web-api:latest
+          env:
+
+            - name: PYTORCH_HOST
+              value: {{ .Values.pytorch_host | quote }}
+            - name: PYTORCH_PORT
+              value: {{ .Values.pytorch_port | quote }}
+            - name: REDIS_HOST
+              value: {{ .Values.redis_host | quote  }}
+            - name: REDIS_PORT
+              value: {{ .Values.redis_port | quote  }}
+          ports:
+            - name: web-api
+              containerPort: 8000
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-api
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: web-api
+  selector:
+    app: web-api
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-api
+spec:
+  ingressClassName: {{ .Values.ingress_class_name | quote }}
+  rules:
+    - host: {{ .Values.ingress_host | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-api
+                port:
+                  number: 8000
