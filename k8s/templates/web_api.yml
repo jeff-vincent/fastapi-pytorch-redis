@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   annotations:
     velocity.tech.v1/id: web-api
-    velocity.tech.v1/dependsOn: redis
+    velocity.tech.v1/dependsOn: redis, pytorch
   name: web-api
   labels:
     app: web-api
@@ -23,7 +23,6 @@ spec:
         - name: web-api
           image: jdvincent/pytorch-web-api:latest
           env:
-
             - name: PYTORCH_HOST
               value: {{ .Values.pytorch_host | quote }}
             - name: PYTORCH_PORT

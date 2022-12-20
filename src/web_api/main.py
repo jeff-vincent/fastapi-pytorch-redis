@@ -18,10 +18,14 @@ async def initialize():
     global REDIS
     REDIS = redis.Redis(connection_pool=pool)
 
+@app.get("/test")
+async def test():
+    return "success"
+
 @app.get('/')
 async def index_view():
     return HTMLResponse("""
-        <div style="background-color: #707bb2; margin: 15px; border-radius: 5px; padding: 15px; width: 300px">
+        <div style="background-color: #707aaa; margin: 15px; border-radius: 5px; padding: 15px; width: 300px">
         <b>Upload an image: </b>
         <form action="/classify" method="post" enctype="multipart/form-data">
             <p><input type=file name=file value="Pick an image">
@@ -44,6 +48,8 @@ async def classify_image(file: bytes = File()):
         except Exception as e:
             return HTMLResponse(f'<h3>Error:{str(e)}</h3>')
     return cached_data
+
+
 
 async def check_for_cached(file):
     hash = zlib.adler32(file)
