@@ -1,6 +1,0 @@
-pytorch_host: "{velocity.v1:pytorch.exposures(port=pytorch).host}"
-pytorch_port: "{velocity.v1:pytorch.exposures(port=pytorch).port}"
-redis_host: "{velocity.v1:redis.exposures(port=redis).host}"
-redis_port: "{velocity.v1:redis.exposures(port=redis).port}"
-ingress_host: "api-{velocity.v1.domainSuffix}"
-ingress_class_name: null
